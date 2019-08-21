@@ -1,15 +1,17 @@
 package com.crud.tasks.controller;
 
+import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/v1/task")
 public class TaskController {
@@ -25,8 +27,9 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "getTask")
-    public TaskDto getTask(Long taskId) {
-        return new TaskDto(1L, "test_title", "test_content");
+    public TaskDto getTask(@RequestParam Long taskId) throws TaskNotFoundException {
+        //return new TaskDto(1L, "test_title", "test_content");
+        return taskMapper.mapToTaskDto(dbService.getTask(taskId).orElseThrow(TaskNotFoundException::new));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteTask")
@@ -34,12 +37,19 @@ public class TaskController {
 
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "updateTask")
-    public TaskDto updateTask(TaskDto taskDto) {
-        return new TaskDto(1L, "Edited test_title", "Edited test_content");
+    @RequestMapping(method = RequestMethod.PUT, value = "updateTask", consumes = "application/json")
+    public TaskDto updateTask(@RequestBody TaskDto taskDto) {
+        //return new TaskDto(1L, "Edited test_title", "Edited test_content");
+        return taskMapper.mapToTaskDto(dbService.saveTask(taskMapper.mapToTask(taskDto)));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createTask")
-    public void createTask(TaskDto taskDto) {
+    @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = "application/json")
+    public void createTask(@RequestBody TaskDto taskDto) {
+        dbService.saveTask(taskMapper.mapToTask(taskDto));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "getTaskById")
+    public TaskDto getTaskById(@RequestParam Long taskId) {
+        return taskMapper.mapToTaskDto(dbService.getTaskById(taskId));
     }
 }
