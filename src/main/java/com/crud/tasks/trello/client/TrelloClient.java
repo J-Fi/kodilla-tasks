@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TrelloClient {
@@ -33,7 +34,9 @@ public class TrelloClient {
 
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(getUrl(), TrelloBoardDto[].class);
 
-        if (boardsResponse != null) {
+        Optional<TrelloBoardDto[]> boardsResponseOptional = Optional.ofNullable(boardsResponse);
+
+        if (boardsResponseOptional.isPresent()) {
             return Arrays.asList(boardsResponse);
         }
         return new ArrayList<>();
