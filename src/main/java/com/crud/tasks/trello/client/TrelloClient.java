@@ -31,15 +31,8 @@ public class TrelloClient {
     @Autowired
     private RestTemplate restTemplate;
     public List<TrelloBoardDto> getTrelloBoards() {
-
         TrelloBoardDto[] boardsResponse = restTemplate.getForObject(getUrl(), TrelloBoardDto[].class);
-
-        Optional<TrelloBoardDto[]> boardsResponseOptional = Optional.ofNullable(boardsResponse);
-
-        if (boardsResponseOptional.isPresent()) {
-            return Arrays.asList(boardsResponse);
-        }
-        return new ArrayList<>();
+        return Optional.of(Arrays.asList(boardsResponse)).orElse(new ArrayList<>());
     }
 
     private URI getUrl() {
