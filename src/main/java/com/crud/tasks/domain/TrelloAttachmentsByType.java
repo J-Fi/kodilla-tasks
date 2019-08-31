@@ -10,17 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreatedTrelloCard {
+public class TrelloAttachmentsByType {
 
-    @JsonProperty("id")
-    private String id;
-
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("shortUrl")
-    private String shortUrl;
-
-    @JsonProperty("badges")
-    private TrelloBadgeDto trelloBadgeDto;
+    @JsonProperty("trello")
+    private TrelloDto trello;
 }
