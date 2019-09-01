@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class TrelloClientTest {
 
     @InjectMocks
-    private TrelloClient telloClient;
+    private TrelloClient trelloClient;
 
     @Mock
     private RestTemplate restTemplate;
@@ -43,7 +44,7 @@ public class TrelloClientTest {
 
         when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenReturn(trelloBoards);
         //When
-
+        List<TrelloBoardDto> fetchedTrelloBoards = trelloClient.getTrelloBoards();
         //Then
     }
 }
