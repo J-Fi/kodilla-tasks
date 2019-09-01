@@ -2,6 +2,7 @@ package com.crud.tasks.trello.client;
 
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.trello.config.TrelloConfig;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -46,5 +47,9 @@ public class TrelloClientTest {
         //When
         List<TrelloBoardDto> fetchedTrelloBoards = trelloClient.getTrelloBoards();
         //Then
+        assertEquals(1, fetchedTrelloBoards.size());
+        assertEquals("test_board", fetchedTrelloBoards.get(0).getId());
+        assertEquals("test_id", fetchedTrelloBoards.get(0).getName());
+        assertEquals(new ArrayList<>(), fetchedTrelloBoards.get(0).getLists());
     }
 }
