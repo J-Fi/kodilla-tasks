@@ -19,9 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
-import static org.springframework.data.mapping.Alias.ofNullable;
-
 @Component
 public class TrelloClient {
 
