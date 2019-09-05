@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://j-fi.github.io/")
 @RestController
 @RequestMapping("/v1/trello")
 public class TrelloController {
