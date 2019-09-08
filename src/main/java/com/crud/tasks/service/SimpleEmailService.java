@@ -21,16 +21,23 @@ public class SimpleEmailService {
         LOGGER.info("Starting email preparation...");
 
         try {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(receiverEmail);
-            mailMessage.setSubject(subject);
-            mailMessage.setText(message);
-
+            SimpleMailMessage mailMessage = createMailMessage(receiverEmail, subject, message);
             javaMailSender.send(mailMessage);
+
             LOGGER.info("Email has been sent...");
         } catch(MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
         }
 
+    }
+
+    private SimpleMailMessage createMailMessage(final String receiverEmail,
+                                                final String subject,
+                                                final String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(receiverEmail);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(message);
+        return mailMessage;
     }
 }
