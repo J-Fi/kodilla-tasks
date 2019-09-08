@@ -9,6 +9,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class SimpleEmailService {
 
@@ -22,7 +24,6 @@ public class SimpleEmailService {
         LOGGER.info("Starting email preparation...");
         try {
             javaMailSender.send(createMailMessage(mail));
-
             LOGGER.info("Email has been sent...");
         } catch(MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
@@ -33,6 +34,7 @@ public class SimpleEmailService {
     private SimpleMailMessage createMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
+        Optional.ofNullable(mail.getToCc()).ifPresent(cc -> mailMessage.setCc(cc));
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
         return mailMessage;
