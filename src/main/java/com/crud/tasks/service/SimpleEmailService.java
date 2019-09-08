@@ -1,5 +1,6 @@
 package com.crud.tasks.service;
 
+import com.crud.tasks.domain.Mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,11 @@ public class SimpleEmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void send(final String receiverEmail, final String subject, final String message) {
+    public void send(final Mail mail) {
 
         LOGGER.info("Starting email preparation...");
-
         try {
-            SimpleMailMessage mailMessage = createMailMessage(receiverEmail, subject, message);
-            javaMailSender.send(mailMessage);
+            javaMailSender.send(createMailMessage(mail));
 
             LOGGER.info("Email has been sent...");
         } catch(MailException e) {
@@ -31,13 +30,11 @@ public class SimpleEmailService {
 
     }
 
-    private SimpleMailMessage createMailMessage(final String receiverEmail,
-                                                final String subject,
-                                                final String message) {
+    private SimpleMailMessage createMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(receiverEmail);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
+        mailMessage.setTo(mail.getMailTo());
+        mailMessage.setSubject(mail.getSubject());
+        mailMessage.setText(mail.getMessage());
         return mailMessage;
     }
 }
