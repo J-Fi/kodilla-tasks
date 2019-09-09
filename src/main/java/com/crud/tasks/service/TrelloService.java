@@ -29,11 +29,11 @@ public class TrelloService {
         return trelloClient.getTrelloBoards();
     }
 
-    public CreatedTrelloCard createdTrelloCard (final TrelloCardDto trelloCardDto) {
+    public CreatedTrelloCard createTrelloCard (final TrelloCardDto trelloCardDto) {
         CreatedTrelloCard newCard = trelloClient.createNewCard(trelloCardDto);
         Optional.ofNullable(newCard).ifPresent(card -> emailService.send(new Mail(
                adminConfig.getAdminMail(),
-               "",
+               null,
                 SUBJECT,
                 "New card: " + trelloCardDto.getName() + " has been created on your Trello account."
         )));
