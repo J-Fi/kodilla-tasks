@@ -32,6 +32,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	
 	//providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 }
