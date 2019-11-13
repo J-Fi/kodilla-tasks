@@ -31,7 +31,6 @@ public class EmailScheduler {
         if (size != 1) t += "s";
         simpleEmailService.send(new Mail(
                 adminConfig.getAdminMail(),
-                null,
                 SUBJECT,
                 "Currently in your database you've got " + size + t
         ));
