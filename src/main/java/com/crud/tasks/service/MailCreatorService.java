@@ -32,6 +32,23 @@ public class MailCreatorService {
         functionality.add("Provides connection with Trello Account");
         functionality.add("Application allows sending tasks to Trello");
 
+        Context context = commonContext(message);
+        context.setVariable("application_functionality", functionality);
+        return templateEngine.process("/mail/created-trello-card-mail", context);
+    }
+
+    public String buildEmailSchedulerEmail (String message) {
+        List<String> emailSchedulerConfigurationOptions = new ArrayList<>();
+        emailSchedulerConfigurationOptions.add("You can cancel this service any time");
+        emailSchedulerConfigurationOptions.add("You can change frequency of sending this information any time");
+
+        Context context = commonContext(message);
+        context.setVariable("emailInformation", "This email is generated automatically. Please do not reply.");
+        context.setVariable("email_scheduler_options", emailSchedulerConfigurationOptions);
+        return templateEngine.process("/mail/number-of-cards-mail", context);
+    }
+
+    private Context commonContext(String message) {
         Context context = new Context();
         context.setVariable("message", message);
         context.setVariable("tasks_url", "https://j-fi.github.io/");
@@ -39,13 +56,8 @@ public class MailCreatorService {
         context.setVariable("admin_name", adminConfig.getAdminName());
         context.setVariable("goodbye_message", GOODBYE_MESSAGE);
         context.setVariable("companyConfig", companyConfig);
-        //context.setVariable("company_name", companyConfig.getCompanyName());
-        //context.setVariable("company_goal", companyConfig.getCompanyGoal());
-        //context.setVariable("company_email", companyConfig.getCompanyEmail());
-        //context.setVariable("company_phone", companyConfig.getCompanyPhone());
-        context.setVariable("show_button", false);
+        context.setVariable("show_button", true);
         context.setVariable("is_friend", false);
-        context.setVariable("application_functionality", functionality);
-        return templateEngine.process("/mail/created-trello-card-mail", context);
+        return context;
     }
 }
