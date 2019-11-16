@@ -70,15 +70,6 @@ public class SimpleEmailService {
         };
     }
 
-    private MimeMessagePreparator createMimeMessageFromEmailScheduler(final Mail mail) {
-        return mimeMessage -> {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setTo(mail.getMailTo());
-            messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildEmailSchedulerEmail(mail.getMessage()), true);
-        };
-    }
-
     private SimpleMailMessage createMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
