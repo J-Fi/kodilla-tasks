@@ -18,6 +18,8 @@ import java.util.Optional;
 public class SimpleEmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEmailService.class);
+    public static final int EMAIL_FROM_EMAIL_SCHEDULER = 0;
+    public static final int EMAIL_FROM_TRELLO_CARD_CREATE = 1;
 
     @Autowired
     private MailCreatorService mailCreatorService;
@@ -60,7 +62,20 @@ public class SimpleEmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            if (mail.getMailGeneratorType() == 1) {
+                messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            } else if (mail.getMailGeneratorType() == 0) {
+                messageHelper.setText(mailCreatorService.buildEmailSchedulerEmail(mail.getMessage()), true);
+            }
+        };
+    }
+
+    private MimeMessagePreparator createMimeMessageFromEmailScheduler(final Mail mail) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(mailCreatorService.buildEmailSchedulerEmail(mail.getMessage()), true);
         };
     }
 

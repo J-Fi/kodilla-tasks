@@ -30,6 +30,7 @@ public class EmailScheduler {
         String t = " task";
         if (size != 1) t += "s";
         simpleEmailService.send(new Mail(
+                SimpleEmailService.EMAIL_FROM_EMAIL_SCHEDULER,
                 adminConfig.getAdminMail(),
                 SUBJECT,
                 "Currently in your database you've got " + size + t

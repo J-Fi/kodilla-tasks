@@ -48,4 +48,9 @@ public class MailCreatorService {
         context.setVariable("application_functionality", functionality);
         return templateEngine.process("/mail/created-trello-card-mail", context);
     }
+
+    public String buildEmailSchedulerEmail (String message) {
+
+        return message;
+    }
 }
