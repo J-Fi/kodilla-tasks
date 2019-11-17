@@ -24,12 +24,13 @@ public class EmailScheduler {
     @Autowired
     private AdminConfig adminConfig;
 
-    @Scheduled(cron = "0 0 10 * * *") //@Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 10000) //@Scheduled(cron = "0 0 10 * * *")
     public void sendInformationEmail() {
         long size = taskRepository.count();
         String t = " task";
         if (size != 1) t += "s";
         simpleEmailService.send(new Mail(
+                Mail.MailGeneratorType.EMAIL_FROM_EMAIL_SCHEDULER,
                 adminConfig.getAdminMail(),
                 SUBJECT,
                 "Currently in your database you've got " + size + t
