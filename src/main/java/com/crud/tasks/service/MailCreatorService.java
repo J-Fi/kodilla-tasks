@@ -2,6 +2,8 @@ package com.crud.tasks.service;
 
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.config.CompanyConfig;
+import com.crud.tasks.domain.Mail;
+import com.crud.tasks.domain.MailGeneratorType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,23 @@ public class MailCreatorService {
     @Autowired
     private AdminConfig adminConfig;
 
+/*    @Autowired
+    private MailGeneratorType mailGeneratorType;*/
+
     @Autowired
     @Qualifier("templateEngine")
     private TemplateEngine templateEngine;
 
-    public String buildTrelloCardEmail (String message) {
+    public String chooseTemplate(Mail mail) {
+        if (mail.getMailGeneratorType() == MailGeneratorType.EMAIL_FROM_TRELLO_CARD_CREATE) {
+            return buildTrelloCardEmail(mail.getMessage(), mail.getMailGeneratorType().getMailTemplateFileName());
+        } else if (mail.getMailGeneratorType() == MailGeneratorType.EMAIL_FROM_EMAIL_SCHEDULER){
+            return buildEmailSchedulerEmail(mail.getMessage(), mail.getMailGeneratorType().getMailTemplateFileName());
+        }
+        return mail.getMailGeneratorType().values() + " nie istenieje.";
+    }
+
+    public String buildTrelloCardEmail (String message, String templatePath) {
         List<String> functionality = new ArrayList<>();
         functionality.add("You can manage your tasks");
         functionality.add("Provides connection with Trello Account");
@@ -34,10 +48,10 @@ public class MailCreatorService {
 
         Context context = commonContext(message);
         context.setVariable("application_functionality", functionality);
-        return templateEngine.process("/mail/created-trello-card-mail", context);
+        return templateEngine.process(templatePath, context);
     }
 
-    public String buildEmailSchedulerEmail (String message) {
+    public String buildEmailSchedulerEmail (String message, String templatePath) {
         List<String> emailSchedulerConfigurationOptions = new ArrayList<>();
         emailSchedulerConfigurationOptions.add("You can cancel this service any time");
         emailSchedulerConfigurationOptions.add("You can change frequency of sending this information any time");
@@ -45,7 +59,7 @@ public class MailCreatorService {
         Context context = commonContext(message);
         context.setVariable("emailInformation", "This email is generated automatically. Please do not reply.");
         context.setVariable("email_scheduler_options", emailSchedulerConfigurationOptions);
-        return templateEngine.process("/mail/number-of-cards-mail", context);
+        return templateEngine.process(templatePath, context);
     }
 
     private Context commonContext(String message) {
