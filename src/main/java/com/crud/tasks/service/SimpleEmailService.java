@@ -1,6 +1,8 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.domain.Mail;
+import com.crud.tasks.domain.MailGeneratorType;
+import com.crud.tasks.scheduler.EmailScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,17 @@ import java.util.Optional;
 public class SimpleEmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEmailService.class);
+    /*public static final int EMAIL_FROM_EMAIL_SCHEDULER = 0;
+    public static final int EMAIL_FROM_TRELLO_CARD_CREATE = 1;*/
 
     @Autowired
     private MailCreatorService mailCreatorService;
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    /*@Autowired
+    private MailGeneratorType mailGeneratorType;*/
 
 /*    public void send(final Mail mail) {
 
@@ -59,15 +66,15 @@ public class SimpleEmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            messageHelper.setText(mailCreatorService.chooseTemplate(mail), true);
         };
     }
 
-    private SimpleMailMessage createMailMessage(final Mail mail) {
+/*    private SimpleMailMessage createMailMessage(final Mail mail) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
         return mailMessage;
-    }
+    }*/
 }
