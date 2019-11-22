@@ -32,9 +32,9 @@ public class MailCreatorService {
     private TemplateEngine templateEngine;
 
     public String chooseTemplate(Mail mail) {
-        if (mail.getMailGeneratorType() == MailGeneratorType.EMAIL_FROM_TRELLO_CARD_CREATE) {
+        if (mail.getMailGeneratorType().equals(MailGeneratorType.EMAIL_FROM_TRELLO_CARD_CREATE)) {
             return buildTrelloCardEmail(mail.getMessage(), mail.getMailGeneratorType().getMailTemplateFileName());
-        } else if (mail.getMailGeneratorType() == MailGeneratorType.EMAIL_FROM_EMAIL_SCHEDULER){
+        } else if (mail.getMailGeneratorType().equals(MailGeneratorType.EMAIL_FROM_EMAIL_SCHEDULER)){
             return buildEmailSchedulerEmail(mail.getMessage(), mail.getMailGeneratorType().getMailTemplateFileName());
         }
         return mail.getMailGeneratorType().values() + " nie istenieje.";

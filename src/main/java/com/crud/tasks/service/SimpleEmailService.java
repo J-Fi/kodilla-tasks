@@ -31,17 +31,6 @@ public class SimpleEmailService {
     /*@Autowired
     private MailGeneratorType mailGeneratorType;*/
 
-/*    public void send(final Mail mail) {
-
-        LOGGER.info("Starting email preparation...");
-        try {
-            javaMailSender.send(createMailMessage(mail));
-            LOGGER.info("Email has been sent...");
-        } catch(MailException e) {
-            LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
-        }
-    }*/
-
     public void send(final Mail mail) {
 
         LOGGER.info("Starting email preparation...");
@@ -61,7 +50,7 @@ public class SimpleEmailService {
         return mailMessage;
     }*/
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail) {
+    public MimeMessagePreparator createMimeMessage(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());

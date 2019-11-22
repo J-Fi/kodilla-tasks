@@ -1,4 +1,4 @@
-package com.crud.tasks.controller;
+/*package com.crud.tasks.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,4 +19,4 @@ public class StaticWebPageController {
         model.put("multiple", "*");
         return "index";
     }
-}
+}*/
